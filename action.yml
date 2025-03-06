@@ -35,11 +35,11 @@ runs:
           echo "Invalid commit hash: \`$commit_id\`"
         else
           # Verify if the commit is on the specified branch
-          if ! git merge-base --is-ancestor "${commit_id}" "${branch_name}"; then
-            echo "valid_commit=false" >> $GITHUB_OUTPUT
-            echo "Commit \`$commit_id\` not found on the branch \`$branch_name\`"
-          else
+          if git merge-base --is-ancestor "${commit_id}" "${branch_name}"; then
             echo "valid_commit=true" >> $GITHUB_OUTPUT
-            echo "Commit \`$commit_id\` is valid on the branch \`$branch_name\`"
+            echo "Commit \`$commit_id\` is valid and found on the branch \`$branch_name\`"
+          else
+            echo "valid_commit=false" >> $GITHUB_OUTPUT
+            echo "Commit \`$commit_id\` is not found on the branch \`$branch_name\`"
           fi
         fi
